@@ -7,9 +7,10 @@ const TaskContextProvider = props => {
   const [tasks, setTasks] = useState([]);
 
   const addTask = async (todoId, task) => {
+    //"https://todolist-boeing-brave-kob.cfapps.io/api/task/"
     try {
       const res = await Axios.post(
-        "https://todolist-boeing-brave-kob.cfapps.io/api/task/" + todoId,
+        "http://localhost:8080/api/task/" + todoId,
         task
       );
       setTasks([...tasks, res.data]);
@@ -22,9 +23,7 @@ const TaskContextProvider = props => {
 
   const removeTask = async taskId => {
     try {
-      const res = Axios.delete(
-        "https://todolist-boeing-brave-kob.cfapps.io/api/task/" + taskId
-      );
+      const res = Axios.delete("http://localhost:8080/api/task/" + taskId);
       setTasks(tasks.filter(task => task.id !== taskId));
       alert("Delete success!");
       console.log(res);
@@ -36,9 +35,7 @@ const TaskContextProvider = props => {
 
   const fetchTasks = async todoId => {
     try {
-      const res = await Axios.get(
-        "https://todolist-boeing-brave-kob.cfapps.io/api/task/" + todoId
-      );
+      const res = await Axios.get("http://localhost:8080/api/task/" + todoId);
       setTasks(res.data);
     } catch (err) {
       console.log(err);

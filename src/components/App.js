@@ -1,25 +1,31 @@
 import React from "react";
-import Header from "./common/Header";
+import { Route, BrowserRouter } from "react-router-dom";
+//import Header from "./common/Header";
 
 import "./App.css";
-import { Box } from "@material-ui/core";
-import TodoContextProvider from "../contexts/TodoContext";
-import TodoComponent from "./todo_components/TodoComponent";
-import TaskContextProvider from "../contexts/TaskContext";
+import LandingPage from "./common/LandingPage";
+// import { Box } from "@material-ui/core";
+// import TodoContextProvider from "../contexts/TodoContext";
+// import TodoComponent from "./todo_components/TodoComponent";
+// import TaskContextProvider from "../contexts/TaskContext";
 
 const App = () => {
   return (
     <React.Fragment>
-      <TodoContextProvider>
-        <TaskContextProvider>
-          <Header />
-          <Box display="flex" p={2}>
-            <TodoComponent />
-          </Box>
-        </TaskContextProvider>
-      </TodoContextProvider>
+      <BrowserRouter>
+        <Route exact path="/" component={LandingPage} />
+      </BrowserRouter>
     </React.Fragment>
   );
 };
 
 export default App;
+
+// /* <TodoContextProvider>
+//       <TaskContextProvider>
+//         <Header />
+//         <Box display="flex" p={2}>
+//           <TodoComponent />
+//         </Box>
+//       </TaskContextProvider>
+//     </TodoContextProvider> */

@@ -8,25 +8,21 @@ const TodoContextProvider = props => {
 
   useEffect(() => {
     //http://localhost:8080/
-    Axios.get("https://todolist-boeing-brave-kob.cfapps.io/api/todo/all").then(
-      res => setTodos(res.data)
+    //"https://todolist-boeing-brave-kob.cfapps.io/api/task/"
+    Axios.get("http://localhost:8080/api/todo/all").then(res =>
+      setTodos(res.data)
     );
   }, []);
 
   const fetchTodos = async () => {
-    const res = await Axios.get(
-      "https://todolist-boeing-brave-kob.cfapps.io/api/todo/all"
-    );
+    const res = await Axios.get("http://localhost:8080/api/todo/all");
 
     setTodos(res.data);
   };
 
   const addTodo = async todo => {
     try {
-      const res = await Axios.post(
-        "https://todolist-boeing-brave-kob.cfapps.io/api/todo",
-        todo
-      );
+      const res = await Axios.post("http://localhost:8080/api/todo", todo);
       setTodos([...todos, res.data]);
     } catch (error) {
       console.log(error);
@@ -38,7 +34,7 @@ const TodoContextProvider = props => {
   const removeTodo = async todoId => {
     try {
       const res = await Axios.delete(
-        "https://todolist-boeing-brave-kob.cfapps.io/api/todo/" + todoId
+        "http://localhost:8080/api/todo/" + todoId
       );
       setTodos(todos.filter(todo => todo.id !== todoId));
       alert("Delete success!");
