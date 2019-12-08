@@ -1,7 +1,6 @@
 import React from "react";
-import { TextField, Grid, Typography } from "@material-ui/core";
+import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { green } from "@material-ui/core/colors";
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -21,6 +20,10 @@ const useStyle = makeStyles(theme => ({
     [theme.breakpoints.up("md")]: {
       width: "40%"
     }
+  },
+  submitButton: {
+    marginRight: "20px",
+    marginLeft: "10px"
   }
 }));
 
@@ -92,6 +95,18 @@ const Register = () => {
               type="password"
               className={classes.textfield}
             />
+          </Grid>
+          <Grid item xs={12} className={classes.gridItem}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.submitButton}
+            >
+              Submit
+            </Button>
+            <Button variant="contained" color="secondary">
+              Cancel
+            </Button>
           </Grid>
         </Grid>
       </form>
