@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import Header from "../common/Header";
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -32,6 +34,7 @@ const Register = () => {
 
   return (
     <div className={classes.root}>
+      <Header />
       <form>
         <Grid container justify="center">
           <Grid
@@ -71,8 +74,8 @@ const Register = () => {
               id="email-input"
               name="email"
               label="Email"
-              variant="outlined"
               type="email"
+              variant="outlined"
               className={classes.textfield}
             />
           </Grid>
@@ -104,9 +107,11 @@ const Register = () => {
             >
               Submit
             </Button>
-            <Button variant="contained" color="secondary">
-              Cancel
-            </Button>
+            <Link to="/">
+              <Button variant="contained" color="secondary">
+                Cancel
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </form>

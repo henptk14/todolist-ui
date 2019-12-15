@@ -4,6 +4,8 @@ import { Route, BrowserRouter } from "react-router-dom";
 
 import "./App.css";
 import LandingPage from "./common/LandingPage";
+import Register from "./usermanagement/Register";
+import Login from "./usermanagement/Login";
 // import { Box } from "@material-ui/core";
 // import TodoContextProvider from "../contexts/TodoContext";
 // import TodoComponent from "./todo_components/TodoComponent";
@@ -14,6 +16,8 @@ const App = () => {
     <React.Fragment>
       <BrowserRouter>
         <Route exact path="/" component={LandingPage} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
       </BrowserRouter>
     </React.Fragment>
   );
