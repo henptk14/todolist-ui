@@ -32,56 +32,34 @@ const useStyle = makeStyles(theme => ({
 const Register = () => {
   const classes = useStyle();
   const [fullName, setFullName] = useState("");
-  const [fullNameError, setFullNameError] = useState(false);
+  const [fullNameError, setFullNameError] = useState("");
   const [username, setUsername] = useState("");
-  const [usernameError, setUsernameError] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+  // will return TRUE for INVALID. Will return FALSE for VALID
   const validateInputs = () => {
-    !fullName || fullName.length < 2
-      ? setFullNameError(true)
-      : setFullNameError(false);
-
-    !username || username.length < 4
-      ? setUsernameError(true)
-      : setUsernameError(false);
-
-    !email ||
-    !email.match(
-      // prettier-ignore //
-      // eslint-disable-next-line no-useless-escape
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
-      ? setEmailError(true)
-      : setEmailError(false);
-
-    !password || password.length < 8
-      ? setPasswordError(true)
-      : setPasswordError(false);
-
-    !confirmPassword || confirmPassword !== password
-      ? setConfirmPasswordError(true)
-      : setConfirmPasswordError(false);
+    return (
+      !!fullNameError ||
+      !!usernameError ||
+      !!emailError ||
+      !!passwordError ||
+      !!confirmPasswordError
+    );
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    validateInputs();
-    const invalid =
-      fullNameError ||
-      usernameError ||
-      emailError ||
-      passwordError ||
-      confirmPasswordError;
 
-    console.log("invalid", invalid);
-
-    if (!invalid) {
+    const invalid = validateInputs();
+    if (invalid) {
+      console.log("invalid", invalid);
+    } else {
       const user = {
         fullName,
         username,
@@ -89,8 +67,60 @@ const Register = () => {
         password
       };
       console.log(user);
-    } else {
-      console.log("There is an error");
+    }
+  };
+
+  const onBlur = event => {
+    const { name } = event.target;
+
+    switch (name) {
+      case "fullName":
+        setFullNameError(
+          !fullName || fullName.length < 2
+            ? "Full name must have at least 2 letters"
+            : ""
+        );
+        break;
+
+      case "username":
+        setUsernameError(
+          !username || username.length < 4
+            ? "Username must have at least 4 letters"
+            : ""
+        );
+        break;
+
+      case "email":
+        setEmailError(
+          !email ||
+            !email.match(
+              // prettier-ignore
+              // eslint-disable-next-line no-useless-escape
+              /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )
+            ? "Invalid email format"
+            : ""
+        );
+        break;
+
+      case "password":
+        setPasswordError(
+          !password || password.length < 8
+            ? "Password must be more than 8 characters"
+            : ""
+        );
+        break;
+
+      case "confirmPassword":
+        setConfirmPasswordError(
+          !confirmPassword || confirmPassword !== password
+            ? "Not matching password"
+            : ""
+        );
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -116,6 +146,7 @@ const Register = () => {
 
       case "confirmPassword":
         setConfirmPassword(value);
+        setConfirmPasswordError(!value || value.length !== password);
         break;
 
       default:
@@ -151,8 +182,10 @@ const Register = () => {
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
-              error={fullNameError}
+              onBlur={onBlur}
+              error={!!fullNameError}
               required
+              helperText={fullNameError}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>
@@ -164,7 +197,8 @@ const Register = () => {
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
-              error={usernameError}
+              onBlur={onBlur}
+              error={!!usernameError}
               required
             />
           </Grid>
@@ -174,11 +208,11 @@ const Register = () => {
               name="email"
               label="Email"
               value={email}
-              type="email"
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
-              error={emailError}
+              onBlur={onBlur}
+              error={!!emailError}
               required
             />
           </Grid>
@@ -190,9 +224,10 @@ const Register = () => {
               value={password}
               variant="outlined"
               type="password"
-              error={passwordError}
+              error={!!passwordError}
               className={classes.textfield}
               onChange={onChange}
+              onBlur={onBlur}
               required
             />
           </Grid>
@@ -204,9 +239,10 @@ const Register = () => {
               value={confirmPassword}
               variant="outlined"
               type="password"
-              error={confirmPasswordError}
+              error={!!confirmPasswordError}
               className={classes.textfield}
               onChange={onChange}
+              onBlur={onBlur}
               required
             />
           </Grid>
