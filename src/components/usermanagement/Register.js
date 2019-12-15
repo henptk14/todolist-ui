@@ -53,7 +53,9 @@ const Register = () => {
 
     !email ||
     !email.match(
-      '/^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$/i'
+      // prettier-ignore //
+      // eslint-disable-next-line no-useless-escape
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
       ? setEmailError(true)
       : setEmailError(false);
@@ -63,19 +65,33 @@ const Register = () => {
       : setPasswordError(false);
 
     !confirmPassword || confirmPassword !== password
-      ? setConfirmPassword(true)
-      : setConfirmPassword(false);
+      ? setConfirmPasswordError(true)
+      : setConfirmPasswordError(false);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
+    validateInputs();
+    const invalid =
+      fullNameError ||
+      usernameError ||
+      emailError ||
+      passwordError ||
+      confirmPasswordError;
 
-    const user = {
-      fullName,
-      username,
-      email,
-      password
-    };
+    console.log("invalid", invalid);
+
+    if (!invalid) {
+      const user = {
+        fullName,
+        username,
+        email,
+        password
+      };
+      console.log(user);
+    } else {
+      console.log("There is an error");
+    }
   };
 
   const onChange = event => {
@@ -135,6 +151,7 @@ const Register = () => {
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
+              error={fullNameError}
               required
             />
           </Grid>
@@ -147,6 +164,7 @@ const Register = () => {
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
+              error={usernameError}
               required
             />
           </Grid>
@@ -160,6 +178,7 @@ const Register = () => {
               variant="outlined"
               className={classes.textfield}
               onChange={onChange}
+              error={emailError}
               required
             />
           </Grid>
@@ -171,6 +190,7 @@ const Register = () => {
               value={password}
               variant="outlined"
               type="password"
+              error={passwordError}
               className={classes.textfield}
               onChange={onChange}
               required
@@ -184,6 +204,7 @@ const Register = () => {
               value={confirmPassword}
               variant="outlined"
               type="password"
+              error={confirmPasswordError}
               className={classes.textfield}
               onChange={onChange}
               required
