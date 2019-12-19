@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Header from "../common/Header";
+import SnackbarWrapper from "../styled_component/SnackbarWrapper";
+import { UserContext } from "../../contexts/UserContext";
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -29,7 +31,7 @@ const useStyle = makeStyles(theme => ({
   }
 }));
 
-const Register = () => {
+const Register = props => {
   const classes = useStyle();
   const [fullName, setFullName] = useState("");
   const [fullNameError, setFullNameError] = useState("");
@@ -41,6 +43,8 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [openErrorSnackbar, setErrorOpenSnackbar] = useState(false);
+  const { createNewUser, error } = useContext(UserContext);
 
   // will return TRUE for INVALID. Will return FALSE for VALID
   const validateInputs = () => {
@@ -58,15 +62,18 @@ const Register = () => {
 
     const invalid = validateInputs();
     if (invalid) {
-      console.log("invalid", invalid);
+      setErrorOpenSnackbar(true);
     } else {
+      setErrorOpenSnackbar(false);
+
       const user = {
         fullName,
         username,
         email,
-        password
+        password,
+        confirmPassword
       };
-      console.log(user);
+      createNewUser(user, props.history);
     }
   };
 
@@ -146,7 +153,6 @@ const Register = () => {
 
       case "confirmPassword":
         setConfirmPassword(value);
-        setConfirmPasswordError(!value || value.length !== password);
         break;
 
       default:
@@ -154,9 +160,18 @@ const Register = () => {
     }
   };
 
+  const errorSnackbarOnCloseHandler = () => {
+    setErrorOpenSnackbar(false);
+  };
+
   return (
     <div className={classes.root}>
       <Header />
+      <SnackbarWrapper
+        open={openErrorSnackbar}
+        message={"There is an error"}
+        onClose={errorSnackbarOnCloseHandler}
+      />
       <form onSubmit={handleSubmit}>
         <Grid container justify="center">
           <Grid
@@ -183,9 +198,9 @@ const Register = () => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!fullNameError}
+              error={!!fullNameError || !!error.fullName}
               required
-              helperText={fullNameError}
+              helperText={error.fullName ? error.fullName : fullNameError}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>
@@ -198,7 +213,8 @@ const Register = () => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!usernameError}
+              error={!!usernameError || !!error.username}
+              helperText={error.username ? error.username : usernameError}
               required
             />
           </Grid>
@@ -212,7 +228,8 @@ const Register = () => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!emailError}
+              error={!!emailError || !!error.email}
+              helperText={error.email ? error.email : emailError}
               required
             />
           </Grid>
@@ -224,10 +241,11 @@ const Register = () => {
               value={password}
               variant="outlined"
               type="password"
-              error={!!passwordError}
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
+              error={!!passwordError || !!error.password}
+              helperText={error.password ? error.password : passwordError}
               required
             />
           </Grid>
@@ -239,10 +257,15 @@ const Register = () => {
               value={confirmPassword}
               variant="outlined"
               type="password"
-              error={!!confirmPasswordError}
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
+              error={!!confirmPasswordError || !!error.confirmPassword}
+              helperText={
+                error.confirmPassword
+                  ? error.confirmPassword
+                  : confirmPasswordError
+              }
               required
             />
           </Grid>

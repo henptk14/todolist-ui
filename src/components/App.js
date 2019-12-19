@@ -6,6 +6,7 @@ import "./App.css";
 import LandingPage from "./common/LandingPage";
 import Register from "./usermanagement/Register";
 import Login from "./usermanagement/Login";
+import UserContextProvider from "../contexts/UserContext";
 // import { Box } from "@material-ui/core";
 // import TodoContextProvider from "../contexts/TodoContext";
 // import TodoComponent from "./todo_components/TodoComponent";
@@ -13,13 +14,13 @@ import Login from "./usermanagement/Login";
 
 const App = () => {
   return (
-    <React.Fragment>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserContextProvider>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-      </BrowserRouter>
-    </React.Fragment>
+      </UserContextProvider>
+    </BrowserRouter>
   );
 };
 
