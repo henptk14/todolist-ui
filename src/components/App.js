@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useContext, useReducer, createContext } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
-//import Header from "./common/Header";
-
 import "./App.css";
 import LandingPage from "./common/LandingPage";
 import Register from "./usermanagement/Register";
 import Login from "./usermanagement/Login";
 import UserContextProvider from "../contexts/UserContext";
-// import { Box } from "@material-ui/core";
-// import TodoContextProvider from "../contexts/TodoContext";
-// import TodoComponent from "./todo_components/TodoComponent";
-// import TaskContextProvider from "../contexts/TaskContext";
+
+const AppContext = createContext();
+
+const securityReducer = (state, action) => {
+  switch (action.type) {
+    case "REGISTER":
+
+    default:
+      break;
+  }
+};
 
 const App = () => {
+  const [securityStore, securityDispatch] = useReducer(securityReducer, {
+    user: {},
+    validToken: false,
+    userErrors: {}
+  });
+
   return (
     <BrowserRouter>
       <UserContextProvider>

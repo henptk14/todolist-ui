@@ -18,6 +18,8 @@ const UserContextProvider = props => {
     }
   };
 
+  const Login = async loginRequest => {};
+
   return (
     <UserContext.Provider value={{ createNewUser, error }}>
       {props.children}
