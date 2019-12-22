@@ -11,9 +11,11 @@ export const securityReducer = (state, action) => {
   }
 };
 
-const register = async (newUser, history) => {
+const register = async (newUser) => {
   try {
     await Axios.post("http://localhost:8080/api/users/register", newUser);
     history.push("/login");
-  } catch (error) {}
+  } catch (error) {
+    
+  }
 };
