@@ -1,21 +1,26 @@
-import { REGISTER_USER } from "./actionConstants";
-import Axios from "axios";
+import { REGISTER_USER, REGISTER_ERROR } from "../actions/actionConstants";
 
-export const securityReducer = (state, action) => {
+const initialState = {
+  validToken: false,
+  user: {},
+  registerError: {}
+};
+
+export default function(state = initialState, action) {
   switch (action.type) {
     case REGISTER_USER:
-      break;
+      return {
+        ...state,
+        registerError: action.payload
+      };
+
+    case REGISTER_ERROR:
+      return {
+        ...state,
+        registerError: action.payload
+      };
 
     default:
-      break;
+      return state;
   }
-};
-
-const register = async (newUser) => {
-  try {
-    await Axios.post("http://localhost:8080/api/users/register", newUser);
-    history.push("/login");
-  } catch (error) {
-    
-  }
-};
+}

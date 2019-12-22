@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Header from "../common/Header";
 import SnackbarWrapper from "../styled_component/SnackbarWrapper";
-import { UserContext } from "../../contexts/UserContext";
+import { useSelector, useDispatch } from "react-redux";
+import { registerNewUser } from "../../actions/AuthActions";
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -44,7 +45,9 @@ const Register = props => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [openErrorSnackbar, setErrorOpenSnackbar] = useState(false);
-  const { createNewUser, error } = useContext(UserContext);
+
+  const registerError = useSelector(state => state.security.registerError);
+  const dispatch = useDispatch();
 
   // will return TRUE for INVALID. Will return FALSE for VALID
   const validateInputs = () => {
@@ -73,7 +76,8 @@ const Register = props => {
         password,
         confirmPassword
       };
-      createNewUser(user, props.history);
+      dispatch(registerNewUser(user, props.history));
+      registerError ? setErrorOpenSnackbar(true) : setErrorOpenSnackbar(false);
     }
   };
 
@@ -198,9 +202,11 @@ const Register = props => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!fullNameError || !!error.fullName}
+              error={!!fullNameError || !!registerError.fullName}
               required
-              helperText={error.fullName ? error.fullName : fullNameError}
+              helperText={
+                registerError.fullName ? registerError.fullName : fullNameError
+              }
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>
@@ -213,8 +219,10 @@ const Register = props => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!usernameError || !!error.username}
-              helperText={error.username ? error.username : usernameError}
+              error={!!usernameError || !!registerError.username}
+              helperText={
+                registerError.username ? registerError.username : usernameError
+              }
               required
             />
           </Grid>
@@ -228,8 +236,10 @@ const Register = props => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!emailError || !!error.email}
-              helperText={error.email ? error.email : emailError}
+              error={!!emailError || !!registerError.email}
+              helperText={
+                registerError.email ? registerError.email : emailError
+              }
               required
             />
           </Grid>
@@ -244,8 +254,10 @@ const Register = props => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!passwordError || !!error.password}
-              helperText={error.password ? error.password : passwordError}
+              error={!!passwordError || !!registerError.password}
+              helperText={
+                registerError.password ? registerError.password : passwordError
+              }
               required
             />
           </Grid>
@@ -260,10 +272,10 @@ const Register = props => {
               className={classes.textfield}
               onChange={onChange}
               onBlur={onBlur}
-              error={!!confirmPasswordError || !!error.confirmPassword}
+              error={!!confirmPasswordError || !!registerError.confirmPassword}
               helperText={
-                error.confirmPassword
-                  ? error.confirmPassword
+                registerError.confirmPassword
+                  ? registerError.confirmPassword
                   : confirmPasswordError
               }
               required
