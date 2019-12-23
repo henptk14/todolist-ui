@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 import Header from "../common/Header";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../../actions/AuthActions";
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -34,6 +36,9 @@ const Login = props => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const loginError = useSelector(state => state.security.loginError);
+  const dispatch = useDispatch();
+
   const onChangeHandler = event => {
     const { name, value } = event.target;
 
@@ -59,6 +64,7 @@ const Login = props => {
       password
     };
     console.log(loginRequest);
+    dispatch(login(loginRequest));
   };
 
   return (
@@ -88,6 +94,8 @@ const Login = props => {
               className={classes.textfield}
               value={usernameOrEmail}
               onChange={onChangeHandler}
+              error={!!loginError.username}
+              helperText={loginError.username}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>
@@ -100,6 +108,8 @@ const Login = props => {
               className={classes.textfield}
               value={password}
               onChange={onChangeHandler}
+              error={!!loginError.password}
+              helperText={loginError.password}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>

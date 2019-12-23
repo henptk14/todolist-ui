@@ -1,9 +1,15 @@
-import { REGISTER_USER, REGISTER_ERROR } from "../actions/actionConstants";
+import {
+  REGISTER_USER,
+  REGISTER_ERROR,
+  LOGIN,
+  LOGIN_ERROR
+} from "../actions/actionConstants";
 
 const initialState = {
   validToken: false,
   user: {},
-  registerError: {}
+  registerError: {},
+  loginError: {}
 };
 
 export default function(state = initialState, action) {
@@ -18,6 +24,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         registerError: action.payload
+      };
+
+    case LOGIN:
+      return {
+        ...state,
+        validToken: !!action.payload,
+        user: action.payload,
+        loginError: {}
+      };
+
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        loginError: action.payload
       };
 
     default:
