@@ -4,7 +4,8 @@ import {
   REGISTER_ERROR,
   REGISTER_USER,
   LOGIN,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  LOGOUT
 } from "./actionConstants";
 import setJWTToken from "../components/securityutils/setJWTToken";
 import jwt_decode from "jwt-decode";
@@ -38,11 +39,19 @@ export const login = loginRequest => async dispatch => {
       type: LOGIN,
       payload: decoded
     });
-  } catch (error) {
-    console.log(error.response.data);
+  } catch (err) {
     dispatch({
       type: LOGIN_ERROR,
-      payload: error.response.data
+      payload: err.response.data
     });
   }
+};
+
+export const logout = () => dispatch => {
+  localStorage.removeItem("jwtToken");
+  setJWTToken(false);
+  dispatch({
+    type: LOGOUT,
+    payload: {}
+  });
 };

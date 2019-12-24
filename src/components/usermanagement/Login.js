@@ -63,7 +63,6 @@ const Login = props => {
       usernameOrEmail,
       password
     };
-    console.log(loginRequest);
     dispatch(login(loginRequest));
   };
 
@@ -94,8 +93,8 @@ const Login = props => {
               className={classes.textfield}
               value={usernameOrEmail}
               onChange={onChangeHandler}
-              error={!!loginError.username}
-              helperText={loginError.username}
+              error={!!loginError && !!loginError.username}
+              helperText={loginError && loginError.username}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>
@@ -108,8 +107,8 @@ const Login = props => {
               className={classes.textfield}
               value={password}
               onChange={onChangeHandler}
-              error={!!loginError.password}
-              helperText={loginError.password}
+              error={!!loginError && !!loginError.password}
+              helperText={loginError && loginError.password}
             />
           </Grid>
           <Grid item xs={12} className={classes.gridItem}>

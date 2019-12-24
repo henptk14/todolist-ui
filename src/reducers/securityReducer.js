@@ -2,7 +2,8 @@ import {
   REGISTER_USER,
   REGISTER_ERROR,
   LOGIN,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  LOGOUT
 } from "../actions/actionConstants";
 
 const initialState = {
@@ -38,6 +39,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loginError: action.payload
+      };
+
+    case LOGOUT:
+      return {
+        initialState
       };
 
     default:

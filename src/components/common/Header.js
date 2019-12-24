@@ -1,25 +1,42 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem
+} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { logout } from "../../actions/AuthActions";
 
 const useStyle = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
   accountIcon: {
-    position: "absolute",
-    right: "0px"
-  },
-  myAccountText: {
-    marginLeft: "0.5rem"
+    marginLeft: "auto",
+    marginRight: -12
   }
 }));
 
 function Header(props) {
   const classes = useStyle();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuItemOpen = Boolean(anchorEl);
 
-  const { loggedIn } = props;
+  const dispatch = useDispatch();
+  const loggedIn = localStorage.getItem("jwtToken");
+
+  const handleAccountIconClicked = e => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.root}>
@@ -27,12 +44,34 @@ function Header(props) {
         <Toolbar>
           <Typography variant="h6">Todo List</Typography>
           {loggedIn && (
-            <IconButton className={classes.accountIcon}>
-              <AccountCircle />
-              <Typography className={classes.myAccountText}>
-                My Account
-              </Typography>
-            </IconButton>
+            <div className={classes.accountIcon}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleAccountIconClicked}
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={menuItemOpen}
+                onClose={handleMenuClose}
+              >
+                <MenuItem>My Account</MenuItem>
+                <MenuItem onClick={() => dispatch(logout())}>Log Out</MenuItem>
+              </Menu>
+            </div>
           )}
         </Toolbar>
       </AppBar>
