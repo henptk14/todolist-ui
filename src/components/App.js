@@ -10,6 +10,8 @@ import jwt_decode from "jwt-decode";
 import { LOGIN } from "../actions/actionConstants";
 import { logout } from "../actions/AuthActions";
 import { store } from "../store";
+import NewTodoComponent from "./todo_components/NewTodoComponent";
+import MainPage from "./common/MainPage";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -22,6 +24,8 @@ if (jwtToken) {
   });
 
   const currentTime = Date.now() / 1000;
+  console.log("decoded.exp", decoded.exp);
+
   if (decoded.exp < currentTime) {
     store.dispatch(logout());
     window.location.href = "/";
@@ -34,6 +38,8 @@ const App = () => {
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" component={Login} />
+      <Route exact path="/newtodo" component={NewTodoComponent} />
+      <Route exact path="/main" component={MainPage} />
     </BrowserRouter>
   );
 };

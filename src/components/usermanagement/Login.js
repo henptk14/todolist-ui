@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 import Header from "../common/Header";
@@ -37,7 +37,14 @@ const Login = props => {
   const [password, setPassword] = useState("");
 
   const loginError = useSelector(state => state.security.loginError);
+  const validToken = useSelector(state => state.security.validToken);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (validToken) {
+      props.history.push("/newtodo");
+    }
+  });
 
   const onChangeHandler = event => {
     const { name, value } = event.target;

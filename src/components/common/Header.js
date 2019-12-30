@@ -9,12 +9,16 @@ import {
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/AuthActions";
 
 const useStyle = makeStyles(theme => ({
   root: {
+    display: "flex",
     flexGrow: 1
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
   },
   accountIcon: {
     marginLeft: "auto",
@@ -28,7 +32,8 @@ function Header(props) {
   const menuItemOpen = Boolean(anchorEl);
 
   const dispatch = useDispatch();
-  const loggedIn = localStorage.getItem("jwtToken");
+  // const loggedIn = localStorage.getItem("jwtToken");
+  const loggedIn = useSelector(state => state.security.validToken);
 
   const handleAccountIconClicked = e => {
     setAnchorEl(e.currentTarget);
@@ -38,9 +43,14 @@ function Header(props) {
     setAnchorEl(null);
   };
 
+  const handleLogOut = () => {
+    dispatch(logout());
+    window.location.href = "/";
+  };
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6">Todo List</Typography>
           {loggedIn && (
@@ -69,7 +79,7 @@ function Header(props) {
                 onClose={handleMenuClose}
               >
                 <MenuItem>My Account</MenuItem>
-                <MenuItem onClick={() => dispatch(logout())}>Log Out</MenuItem>
+                <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
               </Menu>
             </div>
           )}
