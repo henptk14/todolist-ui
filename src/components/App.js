@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./common/LandingPage";
 import Register from "./usermanagement/Register";
@@ -9,9 +9,9 @@ import jwt_decode from "jwt-decode";
 
 import { LOGIN } from "../actions/actionConstants";
 import { logout } from "../actions/AuthActions";
-import { store } from "../store";
-import NewTodoComponent from "./todo_components/NewTodoComponent";
+import store from "../store";
 import MainPage from "./common/MainPage";
+import SecuredRoutes from "./securityutils/secureRoute";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -24,7 +24,6 @@ if (jwtToken) {
   });
 
   const currentTime = Date.now() / 1000;
-  console.log("decoded.exp", decoded.exp);
 
   if (decoded.exp < currentTime) {
     store.dispatch(logout());
@@ -38,19 +37,12 @@ const App = () => {
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" component={Login} />
-      <Route exact path="/newtodo" component={NewTodoComponent} />
-      <Route exact path="/main" component={MainPage} />
+
+      <Switch>
+        <SecuredRoutes exact path="/main" component={MainPage} />
+      </Switch>
     </BrowserRouter>
   );
 };
 
 export default App;
-
-// /* <TodoContextProvider>
-//       <TaskContextProvider>
-//         <Header />
-//         <Box display="flex" p={2}>
-//           <TodoComponent />
-//         </Box>
-//       </TaskContextProvider>
-//     </TodoContextProvider> */

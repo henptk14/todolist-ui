@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -47,7 +47,14 @@ const Register = props => {
   const [openErrorSnackbar, setErrorOpenSnackbar] = useState(false);
 
   const registerError = useSelector(state => state.security.registerError);
+  const validToken = useSelector(state => state.security.validToken);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (validToken) {
+      props.history.push("/main");
+    }
+  });
 
   // will return TRUE for INVALID. Will return FALSE for VALID
   const validateInputs = () => {

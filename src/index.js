@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import App from "./components/App";
 import theme from "./theme";
 import { CssBaseline } from "@material-ui/core";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import store from "./store";
 
 ReactDOM.render(
   <Provider store={store}>

@@ -10,6 +10,9 @@ import {
 import NewTodoComponent from "../todo_components/NewTodoComponent";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex"
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center"
@@ -23,7 +26,8 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up("xl")]: {
       width: 850
-    }
+    },
+    backgroundColor: theme.palette.background.default
   },
   content: {
     padding: theme.spacing(3),
@@ -40,7 +44,7 @@ const MainPage = () => {
   return (
     <div>
       <Header />
-      <div>
+      <div className={classes.root}>
         <Drawer
           variant="permanent"
           className={classes.drawer}
@@ -53,8 +57,7 @@ const MainPage = () => {
           <NewTodoComponent />
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Typography paragraph>This is task component section</Typography>
+          <Typography>This is task component section</Typography>
         </main>
       </div>
     </div>

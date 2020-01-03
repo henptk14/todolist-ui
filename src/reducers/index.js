@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import securityReducer from "./securityReducer";
+import todoReducer from "./todoReducer";
 
 export default combineReducers({
-  security: securityReducer
+  security: securityReducer,
+  todoReducer: todoReducer
 });

@@ -42,7 +42,7 @@ const Login = props => {
 
   useEffect(() => {
     if (validToken) {
-      props.history.push("/newtodo");
+      props.history.push("/main");
     }
   });
 

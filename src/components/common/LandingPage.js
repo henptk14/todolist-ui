@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { Typography, Container, Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { useSelector } from "react-redux";
 
 const useStyle = makeStyles(theme => ({
   container: {
@@ -11,8 +12,16 @@ const useStyle = makeStyles(theme => ({
   }
 }));
 
-const LandingPage = () => {
+const LandingPage = props => {
   const classes = useStyle();
+  const validToken = useSelector(state => state.security.validToken);
+
+  useEffect(() => {
+    if (validToken) {
+      props.history.push("/main");
+    }
+  });
+  console.log("env", process.env.REACT_APP_API_ENDPOINT);
 
   return (
     <>

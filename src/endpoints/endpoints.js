@@ -1,4 +1,11 @@
 export const userApiEndpoints = {
-  register: "http://localhost:8080/api/users/register",
-  login: "http://localhost:8080/api/users/login"
+  register: process.env.REACT_APP_API_ENDPOINT + "/api/users/register",
+  login: process.env.REACT_APP_API_ENDPOINT + "/api/users/login"
+};
+
+export const todoApiEndpoints = {
+  addTodo: process.env.REACT_APP_API_ENDPOINT + "/api/todo",
+  fetchAllTodos: process.env.REACT_APP_API_ENDPOINT + "/api/todo/all",
+  updateTodo: process.env.REACT_APP_API_ENDPOINT + "/api/todo",
+  deleteTodo: process.env.REACT_APP_API_ENDPOINT + "/api/todo/"
 };
