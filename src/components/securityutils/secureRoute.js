@@ -9,7 +9,16 @@ const SecuredRoutes = ({ component: Component, ...otherProps }) => {
     <Route
       {...otherProps}
       render={props =>
-        security.validToken ? <Component {...props} /> : <Redirect to="/" />
+        security.validToken ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: props.location }
+            }}
+          />
+        )
       }
     />
   );
